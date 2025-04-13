@@ -1,6 +1,36 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<style>
+    /* Hide link previews */
+    a {
+        text-decoration: none;
+    }
+    a[title] {
+        position: relative;
+    }
+    a[title]:hover::after {
+        content: "";
+        display: none;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all links in the document
+        const links = document.querySelectorAll('a');
+
+        // For each link
+        links.forEach(link => {
+            // Remove any title attribute that might show on hover
+            if (link.hasAttribute('title')) {
+                link.removeAttribute('title');
+            }
+
+            // Add a blank rel attribute to prevent showing URL in status bar
+            link.setAttribute('rel', 'noopener');
+        });
+    });
+</script>
 <div class="content-section">
   <div class="card border-0 shadow-sm">
     <div class="card-body p-4">

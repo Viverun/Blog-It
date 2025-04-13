@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import logout
-from django.shortcuts import redirect
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 
 def custom_logout(request):
     logout(request)
@@ -25,6 +26,22 @@ def register(request):
         form = UserRegisterForm()
 
     return render(request,'users/register.html',{'form': form})
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    # If the user is viewing their own profile, redirect to the profile page
+    if request.user.is_authenticated and request.user.username == username:
+        return redirect('profile')
+
+    # Get the user's posts
+    from blog.models import Post
+    user_posts = Post.objects.filter(author=user).order_by('-date_posted')
+
+    context = {
+        'profile_user': user,
+        'user_posts': user_posts,
+    }
+    return render(request, 'users/user_profile.html', context)
+
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -46,6 +63,3 @@ def profile(request):
     }
 
     return render(request, 'users/profile.html', context)
-
-
-
