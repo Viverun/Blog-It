@@ -1,0 +1,1367 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<style>
+    /* Hide link previews */
+    a {
+        text-decoration: none;
+    }
+    a[title] {
+        position: relative;
+    }
+    a[title]:hover::after {
+        content: "";
+        display: none;
+    }
+
+    /* Enhanced Welcome Section Styling */
+    .welcome-section {
+        position: relative;
+        background: linear-gradient(145deg, #fff, #f5f5f5);
+        border-radius: var(--border-radius);
+        padding: 0;
+        margin-bottom: 3rem;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+        border-left: 5px solid var(--primary);
+    }
+
+    .welcome-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.03;
+        background-image: 
+            linear-gradient(45deg, #000 25%, transparent 25%), 
+            linear-gradient(-45deg, #000 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #000 75%),
+            linear-gradient(-45deg, transparent 75%, #000 75%);
+        background-size: 20px 20px;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        z-index: 1;
+    }
+
+    .welcome-container {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        z-index: 2;
+    }
+
+    .welcome-content {
+        flex: 2;
+        padding: 3.5rem;
+    }
+
+    .welcome-quote {
+        flex: 3;
+        padding: 2.5rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .welcome-divider {
+        display: flex;
+        align-items: center;
+        margin: 1.2rem 0;
+        width: 70%;
+    }
+
+    .welcome-divider span {
+        height: 2px;
+        background: linear-gradient(90deg, var(--primary), transparent);
+        flex: 1;
+    }
+
+    .welcome-divider i {
+        padding: 0 15px;
+        color: var(--primary);
+        font-size: 1rem;
+    }
+
+    .welcome-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+    }
+
+    .welcome-subtitle {
+        font-size: 1.1rem;
+        color: var(--gray-600);
+        line-height: 1.6;
+        margin-bottom: 1.8rem;
+        max-width: 90%;
+    }
+
+    .welcome-cta {
+        display: inline-flex;
+        align-items: center;
+        background: var(--primary);
+        color: white;
+        font-weight: 600;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        background-size: 100% 100%;
+        background-position: 0 0;
+    }
+
+    .welcome-cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background: linear-gradient(135deg, var(--primary), var(--primary-hover, #0056b3), #6a11cb);
+        transition: width 0.3s ease;
+        z-index: -1;
+        border-radius: 50px;
+    }
+
+    .welcome-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        color: white;
+        background-image: linear-gradient(135deg, var(--primary), var(--primary-hover, #0056b3), #6a11cb);
+        background-size: 200% 100%;
+        background-position: 100% 0;
+        transition: all 0.3s ease, background-position 0.5s ease;
+    }
+
+    .welcome-cta:hover::before {
+        width: 100%;
+    }
+
+    .welcome-cta i {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    .welcome-cta:hover i {
+        transform: translateX(4px);
+    }
+
+    .quote-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        position: relative;
+        transition: all 0.3s ease;
+        transform: translateZ(0);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .quote-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .quote-card i.fas.fa-quote-left {
+        font-size: 1.8rem;
+        color: var(--primary);
+        opacity: 0.2;
+        position: absolute;
+        top: 1.2rem;
+        left: 1.2rem;
+    }
+
+    .quote-text {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: var(--gray-800);
+        font-weight: 500;
+        font-style: italic;
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+
+    .quote-author {
+        text-align: right;
+        margin-top: 1rem;
+    }
+
+    @media (max-width: 992px) {
+        .welcome-container {
+            flex-direction: column;
+        }
+        
+        .welcome-content, .welcome-quote {
+            padding: 2rem;
+        }
+        
+        .welcome-title {
+            font-size: 2rem;
+        }
+        
+        .welcome-subtitle {
+            max-width: 100%;
+        }
+        
+        .quote-card {
+            margin-top: 1.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .welcome-content {
+            padding: 2rem 1.5rem;
+        }
+        
+        .welcome-title {
+            font-size: 1.8rem;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1rem;
+        }
+        
+        .welcome-divider {
+            width: 100%;
+        }
+    }
+
+    /* Enhanced Blog Post Card Styling */
+    .media.content-section {
+        border-radius: var(--border-radius);
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .media.content-section:hover {
+        border-left-color: var(--primary);
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .media.content-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    .media.content-section:hover::before {
+        opacity: 1;
+    }
+
+    /* Author image styling */
+    .article-img {
+        width: 65px;
+        height: 65px;
+        object-fit: cover;
+        border: 3px solid white;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .media.content-section:hover .article-img {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Article metadata styling */
+    .article-metadata {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .author-link {
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 1.05rem;
+        transition: all 0.2s ease;
+        margin-right: 12px;
+    }
+
+    .author-link:hover {
+        color: var(--accent);
+        text-decoration: underline;
+    }
+
+    .text-muted {
+        font-size: 0.85rem;
+        letter-spacing: 0.02em;
+        display: inline-flex;
+        align-items: center;
+        color: var(--gray-600);
+    }
+
+    .text-muted::before {
+        content: '\f017';
+        font-family: 'Font Awesome 5 Free';
+        margin-right: 5px;
+        opacity: 0.7;
+    }
+
+    /* Article title styling */
+    .article-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+        transition: all 0.2s ease;
+    }
+
+    .article-title a {
+        color: var(--dark);
+        transition: all 0.2s ease;
+        display: inline-block;
+    }
+
+    .article-title a:hover {
+        color: var(--primary);
+        transform: translateX(3px);
+    }
+
+    /* Article content styling */
+    .article-content {
+        color: var(--gray-700);
+        font-size: 1.05rem;
+        line-height: 1.7;
+        margin-bottom: 16px;
+    }
+
+    /* Read more link styling - enhanced */
+    .read-more {
+        display: inline-flex;
+        align-items: center;
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-top: 12px;
+        padding: 8px 20px;
+        border-radius: 50px;
+        background-color: rgba(0, 0, 0, 0.03);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .read-more::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background-color: var(--primary);
+        transition: width 0.3s ease;
+        z-index: -1;
+        border-radius: 50px;
+    }
+
+    .read-more:hover {
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .read-more:hover::before {
+        width: 100%;
+    }
+
+    .read-more i {
+        margin-left: 6px;
+        transition: transform 0.3s ease;
+    }
+
+    .read-more:hover i {
+        transform: translateX(3px);
+    }
+
+    /* No posts message styling */
+    .alert-info {
+        background-color: rgba(0, 0, 0, 0.02);
+        border-left: 4px solid var(--info);
+        color: var(--gray-700);
+        font-weight: 500;
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .alert-info .alert-heading {
+        color: var(--info);
+        font-weight: 600;
+    }
+
+    .alert-info i {
+        color: var(--info);
+    }
+
+    /* Blog posts container */
+    .blog-posts-container {
+        position: relative;
+    }
+
+    /* Post categories styling */
+    .post-categories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .post-categories .badge {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+    }
+
+    .post-categories .badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Post footer styling */
+    .post-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px dashed rgba(0, 0, 0, 0.05);
+    }
+
+    /* Post stats styling */
+    .post-stats {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .post-stat {
+        display: inline-flex;
+        align-items: center;
+        color: var(--gray-600);
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
+    }
+
+    .post-stat i {
+        margin-right: 0.4rem;
+        font-size: 0.9rem;
+        color: var(--gray-500);
+    }
+
+    .post-stat:hover {
+        color: var(--primary);
+    }
+
+    .post-stat:hover i {
+        color: var(--primary);
+        transform: scale(1.1);
+    }
+
+    /* Pagination styling */
+    .pagination {
+        gap: 0.3rem;
+    }
+
+    .page-link {
+        border: none;
+        color: var(--gray-700);
+        background-color: var(--gray-100);
+        border-radius: var(--border-radius);
+        padding: 0.5rem 0.8rem;
+        transition: all 0.2s ease;
+    }
+
+    .page-link:hover {
+        background-color: var(--gray-200);
+        color: var(--dark);
+        transform: translateY(-2px);
+    }
+
+    .page-item.active .page-link {
+        background-color: var(--primary);
+        color: white;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-item.disabled .page-link {
+        color: var(--gray-400);
+        background-color: var(--gray-100);
+        opacity: 0.7;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .article-img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .article-title {
+            font-size: 1.4rem;
+        }
+
+        .article-content {
+            font-size: 1rem;
+        }
+
+        .post-footer {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .post-stats {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .article-metadata {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .post-categories {
+            margin-left: 0 !important;
+            margin-top: 0.5rem;
+        }
+
+        .pagination .page-link {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .welcome-title {
+            font-size: 1.8rem;
+        }
+
+        .welcome-subtitle {
+            font-size: 1rem;
+        }
+
+        .featured-categories {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .featured-category-tags {
+            margin-top: 0.5rem;
+        }
+    }
+
+    /* Welcome section styling */
+    .welcome-section {
+        background: linear-gradient(135deg, var(--card-bg), var(--gray-100));
+        border-radius: var(--border-radius);
+        padding: 2.5rem;
+        box-shadow: var(--box-shadow);
+        position: relative;
+        overflow: hidden;
+        border-left: 4px solid var(--primary);
+    }
+
+    .welcome-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 70%);
+        border-radius: 50%;
+        transform: translate(30%, -30%);
+    }
+
+    .welcome-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .welcome-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+    }
+
+    .welcome-subtitle {
+        font-size: 1.1rem;
+        color: var(--gray-600);
+        max-width: 80%;
+        line-height: 1.5;
+    }
+
+    .featured-categories {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .featured-category-label {
+        font-weight: 600;
+        color: var(--gray-700);
+        font-size: 0.95rem;
+    }
+
+    .featured-category-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .featured-tag {
+        display: inline-block;
+        padding: 0.4rem 1rem;
+        background-color: rgba(0, 0, 0, 0.03);
+        color: var(--gray-700);
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .featured-tag:hover {
+        background-color: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Section title styling */
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+    }
+
+    .section-title i {
+        color: var(--primary);
+    }
+
+    /* Post Preview Popup Styles - Enhanced Design */
+    .post-preview-popup {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        border-radius: 24px;
+        box-shadow: 
+            0 15px 40px rgba(0, 0, 0, 0.18),
+            0 2px 8px rgba(0, 0, 0, 0.12),
+            inset 0 2px 0 rgba(255, 255, 255, 0.6);
+        padding: 32px;
+        width: 550px;
+        max-width: 90vw;
+        max-height: 85vh;
+        overflow-y: auto;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(12px);
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -55%);
+    }
+
+    /* Custom scrollbar for the popup */
+    .post-preview-popup::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .post-preview-popup::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 10px;
+        margin: 6px;
+    }
+
+    .post-preview-popup::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.12);
+        border-radius: 10px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+    }
+
+    .post-preview-popup::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.22);
+        border: 2px solid transparent;
+        background-clip: padding-box;
+    }
+
+    .post-preview-popup.show {
+        display: block;
+        animation: popIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes popIn {
+        0% { opacity: 0; transform: translate(-50%, -45%) scale(0.95); }
+        60% { opacity: 1; transform: translate(-50%, -52%) scale(1.02); }
+        100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .post-preview-popup .preview-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 24px;
+        position: relative;
+    }
+
+    .post-preview-popup .preview-author-img {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        margin-right: 18px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        border: 3px solid white;
+        object-fit: cover;
+    }
+
+    .post-preview-popup .preview-author {
+        font-weight: 700;
+        color: var(--dark);
+        font-size: 1.1rem;
+        margin-bottom: 3px;
+    }
+
+    .post-preview-popup .preview-title {
+        font-size: 1.85rem;
+        font-weight: 800;
+        margin: 0 0 20px 0;
+        color: var(--dark);
+        line-height: 1.3;
+        letter-spacing: -0.02em;
+        position: relative;
+        padding-bottom: 18px;
+    }
+
+    .post-preview-popup .preview-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        border-radius: 4px;
+    }
+
+    .post-preview-popup .preview-content {
+        font-size: 1.08rem;
+        line-height: 1.75;
+        margin-bottom: 28px;
+        color: var(--gray-700);
+        position: relative;
+        padding: 0 5px;
+        text-align: justify;
+    }
+    .post-preview-popup .preview-content::first-letter {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--primary);
+    vertical-align: baseline;
+    line-height: 1;
+    margin-right: 0; /* Avoids extra gap */
+    padding: 0;
+}
+
+
+.post-preview-popup .preview-content::first-letter {
+    all: initial;
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--primary);
+    vertical-align: baseline;
+    display: inline;
+}
+
+
+
+    .post-preview-popup .preview-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        padding-top: 22px;
+        margin-top: 14px;
+    }
+
+    .post-preview-popup .preview-date {
+        color: var(--gray-600);
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+    }
+
+    .post-preview-popup .preview-date::before {
+        content: '\f017';
+        font-family: 'Font Awesome 5 Free';
+        margin-right: 8px;
+        opacity: 0.8;
+    }
+
+    .post-preview-popup .preview-read-more {
+        color: white;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+        padding: 10px 20px;
+        border-radius: 50px;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .post-preview-popup .preview-read-more:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+        color: white;
+    }
+
+    .post-preview-popup .preview-read-more i {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    .post-preview-popup .preview-read-more:hover i {
+        transform: translateX(4px);
+    }
+
+    .post-preview-popup .close-preview {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(0, 0, 0, 0.05);
+        border: none;
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: var(--gray-700);
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .post-preview-popup .close-preview:hover {
+        background: var(--primary);
+        color: white;
+        transform: rotate(90deg);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Loading indicator - enhanced */
+    .loading-spinner {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(0, 0, 0, 0.05);
+        border-radius: 50%;
+        border-top-color: var(--primary);
+        border-left-color: var(--primary);
+        animation: enhanced-spin 1s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    @keyframes enhanced-spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Post description styling - new enticing description */
+    .post-description {
+        background: linear-gradient(145deg, #f8f9fa, #ffffff);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        position: relative;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+        border-left: 3px solid var(--primary);
+    }
+    
+    .post-description p {
+        color: var(--gray-700);
+        font-size: 1.02rem;
+        line-height: 1.65;
+        margin-bottom: 0;
+        font-style: italic;
+    }
+    
+    .post-description::before {
+        content: '\f0eb';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        background: var(--primary);
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+    }
+    
+    .highlight-text {
+        color: #8e44ad;
+        font-weight: 600;
+        display: inline-block;
+        padding: 0.1rem 0.3rem;
+        background: rgba(142, 68, 173, 0.08);
+        border-radius: 4px;
+    }
+    
+    .media.content-section:hover .post-description {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Tech quote styling */
+    .tech-quote {
+        position: relative;
+        background: linear-gradient(145deg, rgba(255,255,255,0.7), rgba(244,244,244,0.7));
+        border-radius: 12px;
+        padding: 1.5rem 1.8rem 1rem;
+        margin-top: 1.5rem;
+        box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), 0 5px 15px rgba(0,0,0,0.05);
+        border-left: 3px solid var(--accent);
+        transition: all 0.3s ease;
+    }
+    
+    .tech-quote:hover {
+        transform: translateY(-3px);
+        box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), 0 8px 20px rgba(0,0,0,0.08);
+    }
+    
+    .quote-text {
+        font-size: 1.15rem;
+        line-height: 1.6;
+        color: var(--gray-800);
+        font-weight: 500;
+        font-style: italic;
+        letter-spacing: 0.01em;
+        margin-left: 1.5rem;
+    }
+    
+    .tech-quote i.fa-quote-left {
+        font-size: 1.5rem;
+        color: var(--accent);
+        opacity: 0.6;
+        position: absolute;
+        top: 1rem;
+        left: 1.2rem;
+    }
+    
+    .quote-author {
+        margin-top: 0.5rem;
+        padding-right: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .tech-quote {
+            padding: 1.2rem 1.5rem 0.8rem;
+        }
+        
+        .quote-text {
+            font-size: 1.05rem;
+            margin-left: 1.2rem;
+        }
+        
+        .tech-quote i.fa-quote-left {
+            font-size: 1.3rem;
+            top: 0.8rem;
+            left: 1rem;
+        }
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all links in the document
+        const links = document.querySelectorAll('a');
+
+        // For each link
+        links.forEach(link => {
+            // Remove any title attribute that might show on hover
+            if (link.hasAttribute('title')) {
+                link.removeAttribute('title');
+            }
+
+            // Add a blank rel attribute to prevent showing URL in status bar
+            link.setAttribute('rel', 'noopener');
+        });
+
+        // Create popup element
+        const popup = document.createElement('div');
+        popup.className = 'post-preview-popup';
+        popup.innerHTML = `
+            <button class="close-preview">&times;</button>
+            <div class="preview-content-container"></div>
+        `;
+        document.body.appendChild(popup);
+
+        // Close button functionality
+        const closeButton = popup.querySelector('.close-preview');
+        closeButton.addEventListener('click', function() {
+            popup.classList.remove('show');
+        });
+
+        // Click outside to close
+        document.addEventListener('click', function(event) {
+            if (popup.classList.contains('show') && !popup.contains(event.target) && !event.target.closest('.article-title')) {
+                popup.classList.remove('show');
+            }
+        });
+
+        // Get all blog post articles
+        const blogPosts = document.querySelectorAll('.media.content-section');
+
+        // For each blog post
+        blogPosts.forEach(post => {
+            const titleLink = post.querySelector('.article-title a');
+            const readMoreLink = post.querySelector('.read-more');
+            if (!titleLink) return;
+
+            const postId = titleLink.getAttribute('href').split('/').filter(Boolean).pop();
+            let pressTimer;
+            let isLongPress = false;
+            let startX, startY;
+
+            // Long press detection
+            post.addEventListener('mousedown', function(e) {
+                if (e.button !== 0) return; // Only left mouse button
+                
+                startX = e.clientX;
+                startY = e.clientY;
+                
+                pressTimer = setTimeout(function() {
+                    isLongPress = true;
+                    showPostPreview(postId);
+                }, 600); // Reduced to 600ms for better user experience
+            });
+
+            post.addEventListener('touchstart', function(e) {
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                
+                pressTimer = setTimeout(function() {
+                    isLongPress = true;
+                    showPostPreview(postId);
+                }, 600); // Reduced to 600ms for better user experience
+            });
+
+            // Clear timer if mouse up or leave before timeout
+            post.addEventListener('mouseup', function() {
+                clearTimeout(pressTimer);
+            });
+
+            post.addEventListener('mouseleave', function() {
+                clearTimeout(pressTimer);
+            });
+
+            post.addEventListener('touchend', function() {
+                clearTimeout(pressTimer);
+            });
+
+            post.addEventListener('touchcancel', function() {
+                clearTimeout(pressTimer);
+            });
+
+            // Prevent default click if it was a long press
+            titleLink.addEventListener('click', function(e) {
+                if (isLongPress) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    isLongPress = false;
+                    return false;
+                }
+            });
+            
+            // Also prevent click on the read more link if it was a long press
+            if (readMoreLink) {
+                readMoreLink.addEventListener('click', function(e) {
+                    if (isLongPress) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        isLongPress = false;
+                        return false;
+                    }
+                });
+            }
+
+            // Reset isLongPress after a small delay to allow the event propagation to complete
+            post.addEventListener('mouseup', function() {
+                setTimeout(function() {
+                    isLongPress = false;
+                }, 50);
+            });
+            
+            post.addEventListener('touchend', function() {
+                setTimeout(function() {
+                    isLongPress = false;
+                }, 50);
+            });
+            
+            // Add visual feedback for long press
+            post.addEventListener('mousedown', function() {
+                post.style.transition = 'transform 0.6s ease';
+                
+                let scaleInterval = setInterval(function() {
+                    if (isLongPress) {
+                        clearInterval(scaleInterval);
+                        post.style.transform = 'scale(0.98)';
+                    }
+                }, 100);
+                
+                post.addEventListener('mouseup', function() {
+                    clearInterval(scaleInterval);
+                    post.style.transform = '';
+                }, { once: true });
+                
+                post.addEventListener('mouseleave', function() {
+                    clearInterval(scaleInterval);
+                    post.style.transform = '';
+                }, { once: true });
+            });
+        });
+
+        // Function to show post preview
+        function showPostPreview(postId) {
+            const contentContainer = popup.querySelector('.preview-content-container');
+            contentContainer.innerHTML = `
+                <div class="text-center p-4">
+                    <div class="loading-spinner mb-3"></div>
+                    <p style="color: var(--gray-600); font-weight: 500; letter-spacing: 0.5px;">
+                        <span class="loading-text">Loading preview</span>
+                    </p>
+                </div>
+            `;
+
+            // Animate the loading text with dots
+            const loadingTextAnimation = setInterval(() => {
+                const loadingText = contentContainer.querySelector('.loading-text');
+                if (loadingText) {
+                    if (loadingText.textContent === 'Loading preview...') {
+                        loadingText.textContent = 'Loading preview';
+                    } else {
+                        loadingText.textContent += '.';
+                    }
+                } else {
+                    clearInterval(loadingTextAnimation);
+                }
+            }, 500);
+
+                // Show the popup
+            popup.classList.add('show');
+
+            // Fetch post details
+            fetch(`/post/${postId}/`)
+                .then(response => response.text())
+                .then(html => {
+                    // Create a temporary element to parse the HTML
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+
+                    // Extract the relevant parts from the post detail page
+                    const postContainer = tempDiv.querySelector('.post-container');
+                    if (postContainer) {
+                        // Create a simplified version for the preview
+                        const authorImg = postContainer.querySelector('.article-img').src;
+                        const authorName = postContainer.querySelector('.username-box').textContent.trim().replace('admin', '').trim(); // Remove "admin" text if present
+                        const postDate = postContainer.querySelector('.post-date').textContent.trim();
+                        const postTitle = postContainer.querySelector('.post-title').textContent.trim();
+                        
+                        // Get content and limit to 300 characters with ellipsis
+                        let postContent = postContainer.querySelector('.post-content').textContent.trim();
+                        postContent = postContent.length > 300 ? postContent.substring(0, 300) + '...' : postContent;
+
+                        // Clear the loading animation interval
+
+                        // Build the enhanced preview HTML
+                        contentContainer.innerHTML = `
+                            <div class="preview-header">
+                                <img src="${authorImg}" alt="${authorName}" class="preview-author-img">
+                                <div>
+                                    <div class="preview-author">${authorName}</div>
+                                    <div class="preview-date">${postDate}</div>
+                                </div>
+                            </div>
+                            <h2 class="preview-title">${postTitle}</h2>
+                            <div class="preview-content">${postContent}</div>
+                            <div class="preview-footer">
+                                <div class="preview-date">${postDate}</div>
+                                <a href="/post/${postId}/" class="preview-read-more">Read full post <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        `;
+
+                    } else {
+                        // Clear the loading animation interval
+                        clearInterval(loadingTextAnimation);
+                        contentContainer.innerHTML = `
+                            <div class="text-center p-4">
+                                <i class="fas fa-exclamation-circle text-danger" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                <p class="text-danger" style="font-weight: 500;">Error loading preview</p>
+                                <p class="text-muted" style="font-size: 0.9rem;">Please try again later</p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    // Clear the loading animation interval
+                    clearInterval(loadingTextAnimation);
+                    contentContainer.innerHTML = `
+                        <div class="text-center p-4">
+                            <i class="fas fa-exclamation-circle text-danger" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p class="text-danger" style="font-weight: 500;">Error loading preview</p>
+                            <p class="text-muted" style="font-size: 0.9rem;">Please try again later</p>
+                        </div>
+                    `;
+                    console.error('Error fetching post preview:', error);
+                });
+        }
+    });
+</script>
+    <!-- Enhanced Welcome Section -->
+    <div class="welcome-section">
+        <div class="welcome-pattern"></div>
+        <div class="welcome-container">
+            <div class="welcome-content">
+                <h1 class="welcome-title">Welcome to Our Blog</h1>
+                <div class="welcome-divider">
+                    <span></span>
+                    <i class="fas fa-feather-alt"></i>
+                    <span></span>
+                </div>
+                <p class="welcome-subtitle">Discover insights, tutorials, and stories about technology and programming from our community of passionate writers.</p>
+                <a href="{% url 'post-create' %}" class="welcome-cta">
+                    Start Writing <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="welcome-quote">
+                <div class="quote-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p class="quote-text">"{{ random_quote.text }}"</p>
+                    <div class="quote-author">
+                        <small class="text-muted fst-italic">— {{ random_quote.author }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="blog-posts-container">
+        <h2 class="section-title"><i class="fas fa-newspaper me-2"></i>Latest Posts</h2>
+        {% if posts %}
+            {% for post in posts %}
+                <article class="media content-section mb-4">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}" alt="{{ post.author }}'s profile image">
+                        </div>
+                        <div class="media-body w-100">
+                            <div class="article-metadata">
+                                <a class="username-box" href="{% url 'user-profile' post.author.username %}">{{ post.author }}
+                                    {% if post.author.is_staff %}<span class="admin-badge">admin</span>{% endif %}
+                                </a>
+                                <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+                                
+                                <!-- Removed post category/tag badges -->
+                            </div>
+                            <h2 class="article-title">
+                                <a href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
+                            </h2>
+                            
+                            <!-- Custom enticing description or user's custom description if available -->
+                            <div class="post-description">
+                                {% if post.description %}
+                                    <p>{{ post.description }}</p>
+                                {% else %}
+                                    <p>Experience this insightful exploration of {{ post.title }} concepts. Discover practical tips, hidden techniques, and expert advice that will transform your approach.
+                                    {% if post.author.is_staff %}<span class="highlight-text">Written by our admin expert.</span>{% endif %}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="post-footer">
+                                <div class="post-stats">
+                                    <span class="post-stat"><i class="far fa-eye"></i> </span>
+                                    <!-- <span class="post-stat"><i class="far fa-comment"></i> {% widthratio post.id 2 7 %}</span>
+                                    <span class="post-stat"><i class="far fa-heart"></i> {% widthratio post.id 3 42 %}</span> -->
+                                </div>
+                                <a href="{% url 'post-detail' post.id %}" class="read-more">
+                                    Read more <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+
+            <!-- Pagination for better UX -->
+            <nav aria-label="Blog pagination" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        {% else %}
+            <div class="alert alert-info">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-3 fa-2x"></i>
+                    <div>
+                        <h5 class="alert-heading mb-1">No posts yet!</h5>
+                        <p class="mb-0">No posts available yet. Be the first to create content!</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
