@@ -26,12 +26,11 @@ def register(request):
         form = UserRegisterForm()
 
     return render(request,'users/register.html',{'form': form})
+
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
-    # If the user is viewing their own profile, redirect to the profile page
-    if request.user.is_authenticated and request.user.username == username:
-        return redirect('profile')
-
+    # Removed the automatic redirect to allow users to see their own public profile
+    
     # Get the user's posts
     from blog.models import Post
     user_posts = Post.objects.filter(author=user).order_by('-date_posted')

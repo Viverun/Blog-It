@@ -13,6 +13,224 @@
         display: none;
     }
 
+    /* Enhanced Welcome Section Styling */
+    .welcome-section {
+        position: relative;
+        background: linear-gradient(145deg, #fff, #f5f5f5);
+        border-radius: var(--border-radius);
+        padding: 0;
+        margin-bottom: 3rem;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+        border-left: 5px solid var(--primary);
+    }
+
+    .welcome-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.03;
+        background-image: 
+            linear-gradient(45deg, #000 25%, transparent 25%), 
+            linear-gradient(-45deg, #000 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #000 75%),
+            linear-gradient(-45deg, transparent 75%, #000 75%);
+        background-size: 20px 20px;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        z-index: 1;
+    }
+
+    .welcome-container {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        z-index: 2;
+    }
+
+    .welcome-content {
+        flex: 2;
+        padding: 3.5rem;
+    }
+
+    .welcome-quote {
+        flex: 3;
+        padding: 2.5rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .welcome-divider {
+        display: flex;
+        align-items: center;
+        margin: 1.2rem 0;
+        width: 70%;
+    }
+
+    .welcome-divider span {
+        height: 2px;
+        background: linear-gradient(90deg, var(--primary), transparent);
+        flex: 1;
+    }
+
+    .welcome-divider i {
+        padding: 0 15px;
+        color: var(--primary);
+        font-size: 1rem;
+    }
+
+    .welcome-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+    }
+
+    .welcome-subtitle {
+        font-size: 1.1rem;
+        color: var(--gray-600);
+        line-height: 1.6;
+        margin-bottom: 1.8rem;
+        max-width: 90%;
+    }
+
+    .welcome-cta {
+        display: inline-flex;
+        align-items: center;
+        background: var(--primary);
+        color: white;
+        font-weight: 600;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        background-size: 100% 100%;
+        background-position: 0 0;
+    }
+
+    .welcome-cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background: linear-gradient(135deg, var(--primary), var(--primary-hover, #0056b3), #6a11cb);
+        transition: width 0.3s ease;
+        z-index: -1;
+        border-radius: 50px;
+    }
+
+    .welcome-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        color: white;
+        background-image: linear-gradient(135deg, var(--primary), var(--primary-hover, #0056b3), #6a11cb);
+        background-size: 200% 100%;
+        background-position: 100% 0;
+        transition: all 0.3s ease, background-position 0.5s ease;
+    }
+
+    .welcome-cta:hover::before {
+        width: 100%;
+    }
+
+    .welcome-cta i {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+    }
+
+    .welcome-cta:hover i {
+        transform: translateX(4px);
+    }
+
+    .quote-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        position: relative;
+        transition: all 0.3s ease;
+        transform: translateZ(0);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .quote-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .quote-card i.fas.fa-quote-left {
+        font-size: 1.8rem;
+        color: var(--primary);
+        opacity: 0.2;
+        position: absolute;
+        top: 1.2rem;
+        left: 1.2rem;
+    }
+
+    .quote-text {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: var(--gray-800);
+        font-weight: 500;
+        font-style: italic;
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+
+    .quote-author {
+        text-align: right;
+        margin-top: 1rem;
+    }
+
+    @media (max-width: 992px) {
+        .welcome-container {
+            flex-direction: column;
+        }
+        
+        .welcome-content, .welcome-quote {
+            padding: 2rem;
+        }
+        
+        .welcome-title {
+            font-size: 2rem;
+        }
+        
+        .welcome-subtitle {
+            max-width: 100%;
+        }
+        
+        .quote-card {
+            margin-top: 1.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .welcome-content {
+            padding: 2rem 1.5rem;
+        }
+        
+        .welcome-title {
+            font-size: 1.8rem;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1rem;
+        }
+        
+        .welcome-divider {
+            width: 100%;
+        }
+    }
+
     /* Enhanced Blog Post Card Styling */
     .media.content-section {
         border-radius: var(--border-radius);
@@ -564,15 +782,27 @@
         padding: 0 5px;
         text-align: justify;
     }
-
     .post-preview-popup .preview-content::first-letter {
-        font-size: 2em;
-        font-weight: 700;
-        color: var(--primary);
-        float: left;
-        margin-right: 8px;
-        line-height: 1;
-    }
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--primary);
+    vertical-align: baseline;
+    line-height: 1;
+    margin-right: 0; /* Avoids extra gap */
+    padding: 0;
+}
+
+
+.post-preview-popup .preview-content::first-letter {
+    all: initial;
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--primary);
+    vertical-align: baseline;
+    display: inline;
+}
+
+
 
     .post-preview-popup .preview-footer {
         display: flex;
@@ -670,6 +900,116 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
+
+    /* Post description styling - new enticing description */
+    .post-description {
+        background: linear-gradient(145deg, #f8f9fa, #ffffff);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        position: relative;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+        border-left: 3px solid var(--primary);
+    }
+    
+    .post-description p {
+        color: var(--gray-700);
+        font-size: 1.02rem;
+        line-height: 1.65;
+        margin-bottom: 0;
+        font-style: italic;
+    }
+    
+    .post-description::before {
+        content: '\f0eb';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        background: var(--primary);
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+    }
+    
+    .highlight-text {
+        color: #8e44ad;
+        font-weight: 600;
+        display: inline-block;
+        padding: 0.1rem 0.3rem;
+        background: rgba(142, 68, 173, 0.08);
+        border-radius: 4px;
+    }
+    
+    .media.content-section:hover .post-description {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Tech quote styling */
+    .tech-quote {
+        position: relative;
+        background: linear-gradient(145deg, rgba(255,255,255,0.7), rgba(244,244,244,0.7));
+        border-radius: 12px;
+        padding: 1.5rem 1.8rem 1rem;
+        margin-top: 1.5rem;
+        box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), 0 5px 15px rgba(0,0,0,0.05);
+        border-left: 3px solid var(--accent);
+        transition: all 0.3s ease;
+    }
+    
+    .tech-quote:hover {
+        transform: translateY(-3px);
+        box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), 0 8px 20px rgba(0,0,0,0.08);
+    }
+    
+    .quote-text {
+        font-size: 1.15rem;
+        line-height: 1.6;
+        color: var(--gray-800);
+        font-weight: 500;
+        font-style: italic;
+        letter-spacing: 0.01em;
+        margin-left: 1.5rem;
+    }
+    
+    .tech-quote i.fa-quote-left {
+        font-size: 1.5rem;
+        color: var(--accent);
+        opacity: 0.6;
+        position: absolute;
+        top: 1rem;
+        left: 1.2rem;
+    }
+    
+    .quote-author {
+        margin-top: 0.5rem;
+        padding-right: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .tech-quote {
+            padding: 1.2rem 1.5rem 0.8rem;
+        }
+        
+        .quote-text {
+            font-size: 1.05rem;
+            margin-left: 1.2rem;
+        }
+        
+        .tech-quote i.fa-quote-left {
+            font-size: 1.3rem;
+            top: 0.8rem;
+            left: 1rem;
+        }
+    }
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -715,57 +1055,110 @@
         // For each blog post
         blogPosts.forEach(post => {
             const titleLink = post.querySelector('.article-title a');
+            const readMoreLink = post.querySelector('.read-more');
             if (!titleLink) return;
 
             const postId = titleLink.getAttribute('href').split('/').filter(Boolean).pop();
             let pressTimer;
             let isLongPress = false;
+            let startX, startY;
 
             // Long press detection
             post.addEventListener('mousedown', function(e) {
                 if (e.button !== 0) return; // Only left mouse button
-
+                
+                startX = e.clientX;
+                startY = e.clientY;
+                
                 pressTimer = setTimeout(function() {
                     isLongPress = true;
                     showPostPreview(postId);
-                }, 1000); // 1 second
+                }, 600); // Reduced to 600ms for better user experience
             });
 
             post.addEventListener('touchstart', function(e) {
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                
                 pressTimer = setTimeout(function() {
                     isLongPress = true;
-                    const touch = e.touches[0];
                     showPostPreview(postId);
-                }, 1000); // 1 second
+                }, 600); // Reduced to 600ms for better user experience
             });
 
-            // Clear timer if mouse up or leave before 1 second
+            // Clear timer if mouse up or leave before timeout
             post.addEventListener('mouseup', function() {
                 clearTimeout(pressTimer);
-                isLongPress = false;
             });
 
             post.addEventListener('mouseleave', function() {
                 clearTimeout(pressTimer);
-                isLongPress = false;
             });
 
             post.addEventListener('touchend', function() {
                 clearTimeout(pressTimer);
-                isLongPress = false;
             });
 
             post.addEventListener('touchcancel', function() {
                 clearTimeout(pressTimer);
-                isLongPress = false;
             });
 
             // Prevent default click if it was a long press
-            post.addEventListener('click', function(e) {
+            titleLink.addEventListener('click', function(e) {
                 if (isLongPress) {
                     e.preventDefault();
+                    e.stopPropagation();
                     isLongPress = false;
+                    return false;
                 }
+            });
+            
+            // Also prevent click on the read more link if it was a long press
+            if (readMoreLink) {
+                readMoreLink.addEventListener('click', function(e) {
+                    if (isLongPress) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        isLongPress = false;
+                        return false;
+                    }
+                });
+            }
+
+            // Reset isLongPress after a small delay to allow the event propagation to complete
+            post.addEventListener('mouseup', function() {
+                setTimeout(function() {
+                    isLongPress = false;
+                }, 50);
+            });
+            
+            post.addEventListener('touchend', function() {
+                setTimeout(function() {
+                    isLongPress = false;
+                }, 50);
+            });
+            
+            // Add visual feedback for long press
+            post.addEventListener('mousedown', function() {
+                post.style.transition = 'transform 0.6s ease';
+                
+                let scaleInterval = setInterval(function() {
+                    if (isLongPress) {
+                        clearInterval(scaleInterval);
+                        post.style.transform = 'scale(0.98)';
+                    }
+                }, 100);
+                
+                post.addEventListener('mouseup', function() {
+                    clearInterval(scaleInterval);
+                    post.style.transform = '';
+                }, { once: true });
+                
+                post.addEventListener('mouseleave', function() {
+                    clearInterval(scaleInterval);
+                    post.style.transform = '';
+                }, { once: true });
             });
         });
 
@@ -807,17 +1200,20 @@
                     tempDiv.innerHTML = html;
 
                     // Extract the relevant parts from the post detail page
-                    const articleContent = tempDiv.querySelector('.media.content-section');
-                    if (articleContent) {
+                    const postContainer = tempDiv.querySelector('.post-container');
+                    if (postContainer) {
                         // Create a simplified version for the preview
-                        const authorImg = articleContent.querySelector('img.rounded-circle').src;
-                        const authorName = articleContent.querySelector('.article-metadata a').textContent.trim();
-                        const postDate = articleContent.querySelector('.text-muted').textContent.trim();
-                        const postTitle = articleContent.querySelector('.article-title').textContent.trim();
-                        const postContent = articleContent.querySelector('.article-content').textContent.trim();
-
-                        // Clear the loading animation interval
-                        clearInterval(loadingTextAnimation);
+                        const authorImg = postContainer.querySelector('.article-img').src;
+                        const authorName = postContainer.querySelector('.username-box').textContent.trim().replace('admin', '').trim(); // Remove "admin" text if present
+                        const postDate = postContainer.querySelector('.post-date').textContent.trim();
+                        const postTitle = postContainer.querySelector('.post-title').textContent.trim();
+                        
+                        // Get content as HTML to preserve formatting
+                        let postContent = postContainer.querySelector('.post-content').innerHTML.trim();
+                        // Truncate HTML content wisely (this is a simplified approach)
+                        if (postContent.length > 300) {
+                            postContent = postContent.substring(0, 300) + '...';
+                        }
 
                         // Build the enhanced preview HTML
                         contentContainer.innerHTML = `
@@ -863,20 +1259,30 @@
         }
     });
 </script>
-    <!-- Welcome Section -->
-    <div class="welcome-section mb-4">
-        <div class="welcome-header">
-            <h1 class="welcome-title">Welcome to Our Blog</h1>
-            <p class="welcome-subtitle">Discover insights, tutorials, and stories about technology and programming</p>
-        </div>
-        <div class="featured-categories">
-            <div class="featured-category-label">Popular Topics:</div>
-            <div class="featured-category-tags">
-                <a href="#" class="featured-tag">Python</a>
-                <a href="#" class="featured-tag">Web Development</a>
-                <a href="#" class="featured-tag">Data Science</a>
-                <a href="#" class="featured-tag">Machine Learning</a>
-                <a href="#" class="featured-tag">UI/UX</a>
+    <!-- Enhanced Welcome Section -->
+    <div class="welcome-section">
+        <div class="welcome-pattern"></div>
+        <div class="welcome-container">
+            <div class="welcome-content">
+                <h1 class="welcome-title">Welcome to Our Blog</h1>
+                <div class="welcome-divider">
+                    <span></span>
+                    <i class="fas fa-feather-alt"></i>
+                    <span></span>
+                </div>
+                <p class="welcome-subtitle">Discover insights, tutorials, and stories about technology and programming from our community of passionate writers.</p>
+                <a href="{% url 'post-create' %}" class="welcome-cta">
+                    Start Writing <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="welcome-quote">
+                <div class="quote-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p class="quote-text">"{{ random_quote.text }}"</p>
+                    <div class="quote-author">
+                        <small class="text-muted fst-italic">— {{ random_quote.author }}</small>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -892,30 +1298,33 @@
                         </div>
                         <div class="media-body w-100">
                             <div class="article-metadata">
-                                {% if user.is_authenticated and post.author == user %}
-                                <a class="author-link" href="{% url 'profile' %}">{{ post.author }}</a>
-                                {% else %}
-                                <a class="author-link" href="{% url 'user-profile' post.author.username %}">{{ post.author }}</a>
-                                {% endif %}
+                                <a class="username-box" href="{% url 'user-profile' post.author.username %}">{{ post.author }}
+                                    {% if post.author.is_staff %}<span class="admin-badge">admin</span>{% endif %}
+                                </a>
                                 <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
-
-                                <!-- Post category/tag badges - for visual enhancement -->
-                                <div class="post-categories ms-auto">
-                                    <span class="badge bg-mono-{% cycle '1' '2' '3' '4' '5' '6' %}">
-                                        {% cycle 'Technology' 'Programming' 'Web Dev' 'Tutorial' 'Design' 'Tips' %}
-                                    </span>
-                                </div>
+                                
+                                <!-- Removed post category/tag badges -->
                             </div>
                             <h2 class="article-title">
                                 <a href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
                             </h2>
-                            <p class="article-content">{{ post.content|truncatechars:280 }}</p>
-
+                            
+                            <!-- Custom enticing description or user's custom description if available -->
+                            <div class="post-description">
+                                {% if post.description %}
+                                    <p>{{ post.description }}</p>
+                                {% else %}
+                                    <p>Experience this insightful exploration of {{ post.title }} concepts. Discover practical tips, hidden techniques, and expert advice that will transform your approach.
+                                    {% if post.author.is_staff %}<span class="highlight-text">Written by our admin expert.</span>{% endif %}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            
                             <div class="post-footer">
                                 <div class="post-stats">
-                                    <span class="post-stat"><i class="far fa-eye"></i> {% widthratio post.id 1 123 %}</span>
-                                    <span class="post-stat"><i class="far fa-comment"></i> {% widthratio post.id 2 7 %}</span>
-                                    <span class="post-stat"><i class="far fa-heart"></i> {% widthratio post.id 3 42 %}</span>
+                                    <span class="post-stat"><i class="far fa-eye"></i> </span>
+                                    <!-- <span class="post-stat"><i class="far fa-comment"></i> {% widthratio post.id 2 7 %}</span>
+                                    <span class="post-stat"><i class="far fa-heart"></i> {% widthratio post.id 3 42 %}</span> -->
                                 </div>
                                 <a href="{% url 'post-detail' post.id %}" class="read-more">
                                     Read more <i class="fas fa-arrow-right ms-1"></i>

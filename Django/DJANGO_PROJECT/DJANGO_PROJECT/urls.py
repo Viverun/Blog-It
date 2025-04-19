@@ -34,6 +34,7 @@ urlpatterns = [
     # Remove or comment out the previous logout path
     #path("logout/", auth_views.LogoutView.as_view(template_name="users/logout.html"...
     path('', include('blog.urls')),
+    path('summernote/', include('django_summernote.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
